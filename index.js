@@ -10,15 +10,18 @@ let PORT = process.env.PORT || 5000;
 
 // Getting all the movies start
 
-app.get("/movies", async (req, res) => {
+app.get("/movies/:page", async (req, res) => {
   try {
     let movies = [];
     let totalPages;
     await axios
-      .get(`${process.env.APP_URI}/category/movies/hollywood`)
+      .get(
+        `${process.env.APP_URI}/category/movies/hollywood/page/${req.params.page}`
+      )
       .then((response) => {
         const html = response.data;
         const $ = cheerio.load(html);
+        totalPages = Number($(".page-numbers:last").prev().text());
         $("article", html).each(function () {
           const link = $(this).find("a").attr("href");
           const text = $(this).find("a").text();
@@ -26,7 +29,6 @@ app.get("/movies", async (req, res) => {
           const id = link.split("/")[3];
           movies = [...movies, { link, text, img, id }];
         });
-        totalPages = Number($(".page-numbers:last").prev().text());
       })
       .catch((err) => console.log(err));
     res.json({ movies: movies, totalPages, itemsPerPage: movies.length });
@@ -37,15 +39,18 @@ app.get("/movies", async (req, res) => {
 // Getting all the movies Ends
 
 // Getting the Movies By Genre Starts
-app.get("/movies/genre/:genre", async (req, res) => {
+app.get("/movies/genre/:genre/:page", async (req, res) => {
   try {
     let movies = [];
     let totalPages;
     await axios
-      .get(`${process.env.APP_URI}/category/genre/${req.params.genre}`)
+      .get(
+        `${process.env.APP_URI}/category/genre/${req.params.genre}/page/${req.params.page}`
+      )
       .then((response) => {
         const html = response.data;
         const $ = cheerio.load(html);
+        totalPages = Number($(".page-numbers:last").prev().text());
         $("article", html).each(function () {
           const link = $(this).find("a").attr("href");
           const text = $(this).find("a").text();
@@ -53,7 +58,6 @@ app.get("/movies/genre/:genre", async (req, res) => {
           const id = link.split("/")[3];
           movies = [...movies, { link, text, img, id }];
         });
-        totalPages = Number($(".page-numbers:last").prev().text());
       })
       .catch((err) => console.log(err));
     res.json({ movies: movies, totalPages, itemsPerPage: movies.length });
@@ -64,15 +68,18 @@ app.get("/movies/genre/:genre", async (req, res) => {
 // Getting the Movies By Genre Ends
 
 // Getting the movies by year Starts
-app.get("/movies/year/:year", async (req, res) => {
+app.get("/movies/year/:year/:page", async (req, res) => {
   try {
     let movies = [];
     let totalPages;
     await axios
-      .get(`${process.env.APP_URI}/category/year/${req.params.year}`)
+      .get(
+        `${process.env.APP_URI}/category/year/${req.params.year}/page/${req.params.page}`
+      )
       .then((response) => {
         const html = response.data;
         const $ = cheerio.load(html);
+        totalPages = Number($(".page-numbers:last").prev().text());
         $("article", html).each(function () {
           const link = $(this).find("a").attr("href");
           const text = $(this).find("a").text();
@@ -80,7 +87,6 @@ app.get("/movies/year/:year", async (req, res) => {
           const id = link.split("/")[3];
           movies = [...movies, { link, text, img, id }];
         });
-        totalPages = Number($(".page-numbers:last").prev().text());
       })
       .catch((err) => console.log(err));
     res.json({ movies: movies, totalPages, itemsPerPage: movies.length });
@@ -92,15 +98,18 @@ app.get("/movies/year/:year", async (req, res) => {
 // Getting the movies by year Ends
 
 // Getting the movie by category starts
-app.get("/movies/category/:category", async (req, res) => {
+app.get("/movies/category/:category/:page", async (req, res) => {
   try {
     let movies = [];
     let totalPages;
     await axios
-      .get(`${process.env.APP_URI}/category/movies/${req.params.category}`)
+      .get(
+        `${process.env.APP_URI}/category/movies/${req.params.category}/page/${req.params.page}`
+      )
       .then((response) => {
         const html = response.data;
         const $ = cheerio.load(html);
+        totalPages = Number($(".page-numbers:last").prev().text());
         $("article", html).each(function () {
           const link = $(this).find("a").attr("href");
           const text = $(this).find("a").text();
@@ -108,7 +117,6 @@ app.get("/movies/category/:category", async (req, res) => {
           const id = link.split("/")[3];
           movies = [...movies, { link, text, img, id }];
         });
-        totalPages = Number($(".page-numbers:last").prev().text());
       })
       .catch((err) => console.log(err));
     res.json({ movies: movies, totalPages, itemsPerPage: movies.length });
@@ -120,15 +128,18 @@ app.get("/movies/category/:category", async (req, res) => {
 // Getting the movie by category ends
 
 // Getting the movies by webseries starts
-app.get("/movies/webSeries/:webSeries", async (req, res) => {
+app.get("/movies/webSeries/:webSeries/:page", async (req, res) => {
   try {
     let movies = [];
     let totalPages;
     await axios
-      .get(`${process.env.APP_URI}/category/web-series/${req.params.webSeries}`)
+      .get(
+        `${process.env.APP_URI}/category/web-series/${req.params.webSeries}/page/${req.params.page}`
+      )
       .then((response) => {
         const html = response.data;
         const $ = cheerio.load(html);
+        totalPages = Number($(".page-numbers:last").prev().text());
         $("article", html).each(function () {
           const link = $(this).find("a").attr("href");
           const text = $(this).find("a").text();
@@ -136,7 +147,6 @@ app.get("/movies/webSeries/:webSeries", async (req, res) => {
           const id = link.split("/")[3];
           movies = [...movies, { link, text, img, id }];
         });
-        totalPages = Number($(".page-numbers:last").prev().text());
       })
       .catch((err) => console.log(err));
     res.json({ movies: movies, totalPages, itemsPerPage: movies.length });
@@ -147,42 +157,15 @@ app.get("/movies/webSeries/:webSeries", async (req, res) => {
 
 // Getting the movies by webseries ends
 
-// Getting the movie by page No Starts
-app.get("/movies/page/:pageNo", async (req, res) => {
+// Getting the mobie by Search Starts
+app.get("/movies/movieBySearch/:page", async (req, res) => {
   try {
     let movies = [];
     let totalPages;
     await axios
       .get(
-        `${process.env.APP_URI}/category/movies/hollywood/page/${req.params.pageNo}`
+        `${process.env.APP_URI}/page/${req.params.page}?s=${req.query.search}`
       )
-      .then((response) => {
-        const html = response.data;
-        const $ = cheerio.load(html);
-        $("article", html).each(function () {
-          const link = $(this).find("a").attr("href");
-          const text = $(this).find("a").text();
-          const img = $(this).find("img").attr("src");
-          const id = link.split("/")[3];
-          movies = [...movies, { link, text, img, id }];
-        });
-        totalPages = Number($(".page-numbers:last").prev().text());
-      })
-      .catch((err) => console.log(err));
-    res.json({ movies: movies, totalPages, itemsPerPage: movies.length });
-  } catch (error) {
-    console.log(error);
-  }
-});
-// Getting the movie by page No Ends
-
-// Getting the mobie by Search Starts
-app.get("/movies/movieBySearch", async (req, res) => {
-  try {
-    let movies = [];
-    let totalPages;
-    await axios
-      .get(`${process.env.APP_URI}/?s=${req.query.search}`)
       .then((response) => {
         const html = response.data;
         const $ = cheerio.load(html);
