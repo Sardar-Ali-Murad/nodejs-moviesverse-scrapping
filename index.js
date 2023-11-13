@@ -12,8 +12,8 @@ let PORT = process.env.PORT || 5000;
 
 app.get("/movies", async (req, res) => {
   try {
-    console.log(process.env.APP_URI);
     let movies = [];
+    let totalPages;
     await axios
       .get(`${process.env.APP_URI}/category/movies/hollywood`)
       .then((response) => {
@@ -23,11 +23,13 @@ app.get("/movies", async (req, res) => {
           const link = $(this).find("a").attr("href");
           const text = $(this).find("a").text();
           const img = $(this).find("img").attr("src");
-          movies = [...movies, { link, text, img }];
+          const id = link.split("/")[3];
+          movies = [...movies, { link, text, img, id }];
         });
+        totalPages = Number($(".page-numbers:last").prev().text());
       })
       .catch((err) => console.log(err));
-    res.json({ movies: movies, length: movies.length });
+    res.json({ movies: movies, totalPages, itemsPerPage: movies.length });
   } catch (error) {
     console.log(error);
   }
@@ -38,6 +40,7 @@ app.get("/movies", async (req, res) => {
 app.get("/movies/genre/:genre", async (req, res) => {
   try {
     let movies = [];
+    let totalPages;
     await axios
       .get(`${process.env.APP_URI}/category/genre/${req.params.genre}`)
       .then((response) => {
@@ -47,11 +50,13 @@ app.get("/movies/genre/:genre", async (req, res) => {
           const link = $(this).find("a").attr("href");
           const text = $(this).find("a").text();
           const img = $(this).find("img").attr("src");
-          movies = [...movies, { link, text, img }];
+          const id = link.split("/")[3];
+          movies = [...movies, { link, text, img, id }];
         });
+        totalPages = Number($(".page-numbers:last").prev().text());
       })
       .catch((err) => console.log(err));
-    res.json({ movies: movies, length: movies.length });
+    res.json({ movies: movies, totalPages, itemsPerPage: movies.length });
   } catch (error) {
     console.log(error);
   }
@@ -62,6 +67,7 @@ app.get("/movies/genre/:genre", async (req, res) => {
 app.get("/movies/year/:year", async (req, res) => {
   try {
     let movies = [];
+    let totalPages;
     await axios
       .get(`${process.env.APP_URI}/category/year/${req.params.year}`)
       .then((response) => {
@@ -71,11 +77,13 @@ app.get("/movies/year/:year", async (req, res) => {
           const link = $(this).find("a").attr("href");
           const text = $(this).find("a").text();
           const img = $(this).find("img").attr("src");
-          movies = [...movies, { link, text, img }];
+          const id = link.split("/")[3];
+          movies = [...movies, { link, text, img, id }];
         });
+        totalPages = Number($(".page-numbers:last").prev().text());
       })
       .catch((err) => console.log(err));
-    res.json({ movies: movies, length: movies.length });
+    res.json({ movies: movies, totalPages, itemsPerPage: movies.length });
   } catch (error) {
     console.log(error);
   }
@@ -87,6 +95,7 @@ app.get("/movies/year/:year", async (req, res) => {
 app.get("/movies/category/:category", async (req, res) => {
   try {
     let movies = [];
+    let totalPages;
     await axios
       .get(`${process.env.APP_URI}/category/movies/${req.params.category}`)
       .then((response) => {
@@ -96,11 +105,13 @@ app.get("/movies/category/:category", async (req, res) => {
           const link = $(this).find("a").attr("href");
           const text = $(this).find("a").text();
           const img = $(this).find("img").attr("src");
-          movies = [...movies, { link, text, img }];
+          const id = link.split("/")[3];
+          movies = [...movies, { link, text, img, id }];
         });
+        totalPages = Number($(".page-numbers:last").prev().text());
       })
       .catch((err) => console.log(err));
-    res.json({ movies: movies, length: movies.length });
+    res.json({ movies: movies, totalPages, itemsPerPage: movies.length });
   } catch (error) {
     console.log(error);
   }
@@ -112,6 +123,7 @@ app.get("/movies/category/:category", async (req, res) => {
 app.get("/movies/webSeries/:webSeries", async (req, res) => {
   try {
     let movies = [];
+    let totalPages;
     await axios
       .get(`${process.env.APP_URI}/category/web-series/${req.params.webSeries}`)
       .then((response) => {
@@ -121,11 +133,13 @@ app.get("/movies/webSeries/:webSeries", async (req, res) => {
           const link = $(this).find("a").attr("href");
           const text = $(this).find("a").text();
           const img = $(this).find("img").attr("src");
-          movies = [...movies, { link, text, img }];
+          const id = link.split("/")[3];
+          movies = [...movies, { link, text, img, id }];
         });
+        totalPages = Number($(".page-numbers:last").prev().text());
       })
       .catch((err) => console.log(err));
-    res.json({ movies: movies, length: movies.length });
+    res.json({ movies: movies, totalPages, itemsPerPage: movies.length });
   } catch (error) {
     console.log(error);
   }
@@ -137,6 +151,7 @@ app.get("/movies/webSeries/:webSeries", async (req, res) => {
 app.get("/movies/page/:pageNo", async (req, res) => {
   try {
     let movies = [];
+    let totalPages;
     await axios
       .get(
         `${process.env.APP_URI}/category/movies/hollywood/page/${req.params.pageNo}`
@@ -148,11 +163,13 @@ app.get("/movies/page/:pageNo", async (req, res) => {
           const link = $(this).find("a").attr("href");
           const text = $(this).find("a").text();
           const img = $(this).find("img").attr("src");
-          movies = [...movies, { link, text, img }];
+          const id = link.split("/")[3];
+          movies = [...movies, { link, text, img, id }];
         });
+        totalPages = Number($(".page-numbers:last").prev().text());
       })
       .catch((err) => console.log(err));
-    res.json({ movies: movies, length: movies.length });
+    res.json({ movies: movies, totalPages, itemsPerPage: movies.length });
   } catch (error) {
     console.log(error);
   }
@@ -163,6 +180,7 @@ app.get("/movies/page/:pageNo", async (req, res) => {
 app.get("/movies/movieBySearch", async (req, res) => {
   try {
     let movies = [];
+    let totalPages;
     await axios
       .get(`${process.env.APP_URI}/?s=${req.query.search}`)
       .then((response) => {
@@ -172,11 +190,13 @@ app.get("/movies/movieBySearch", async (req, res) => {
           const link = $(this).find("a").attr("href");
           const text = $(this).find("a").text();
           const img = $(this).find("img").attr("src");
-          movies = [...movies, { link, text, img }];
+          const id = link.split("/")[3];
+          movies = [...movies, { link, text, img, id }];
         });
+        totalPages = Number($(".page-numbers:last").prev().text());
       })
       .catch((err) => console.log(err));
-    res.json({ movies: movies, length: movies.length });
+    res.json({ movies: movies, totalPages, itemsPerPage: movies.length });
   } catch (error) {
     console.log(error);
   }
