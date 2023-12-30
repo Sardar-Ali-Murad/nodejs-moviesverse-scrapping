@@ -16,7 +16,7 @@ app.get("/movies/:page", async (req, res) => {
     let totalPages;
     await axios
       .get(
-        `${process.env.APP_URI}/category/movies/hollywood/page/${req.params.page}`
+        `https://moviesverse.zip/category/movies/hollywood/page/${req.params.page}`
       )
       .then((response) => {
         const html = response.data;
@@ -45,7 +45,7 @@ app.get("/movies/genre/:genre/:page", async (req, res) => {
     let totalPages;
     await axios
       .get(
-        `${process.env.APP_URI}/category/genre/${req.params.genre}/page/${req.params.page}`
+        `https://moviesverse.zip/category/genre/${req.params.genre}/page/${req.params.page}`
       )
       .then((response) => {
         const html = response.data;
@@ -74,7 +74,7 @@ app.get("/movies/year/:year/:page", async (req, res) => {
     let totalPages;
     await axios
       .get(
-        `${process.env.APP_URI}/category/year/${req.params.year}/page/${req.params.page}`
+        `https://moviesverse.zip/category/year/${req.params.year}/page/${req.params.page}`
       )
       .then((response) => {
         const html = response.data;
@@ -104,7 +104,7 @@ app.get("/movies/category/:category/:page", async (req, res) => {
     let totalPages;
     await axios
       .get(
-        `${process.env.APP_URI}/category/movies/${req.params.category}/page/${req.params.page}`
+        `https://moviesverse.zip/category/movies/${req.params.category}/page/${req.params.page}`
       )
       .then((response) => {
         const html = response.data;
@@ -134,7 +134,7 @@ app.get("/movies/webSeries/:webSeries/:page", async (req, res) => {
     let totalPages;
     await axios
       .get(
-        `${process.env.APP_URI}/category/web-series/${req.params.webSeries}/page/${req.params.page}`
+        `https://moviesverse.zip/category/web-series/${req.params.webSeries}/page/${req.params.page}`
       )
       .then((response) => {
         const html = response.data;
@@ -164,7 +164,7 @@ app.get("/movies/movieBySearch/:page", async (req, res) => {
     let totalPages;
     await axios
       .get(
-        `${process.env.APP_URI}/page/${req.params.page}?s=${req.query.search}`
+        `https://moviesverse.zip/page/${req.params.page}?s=${req.query.search}`
       )
       .then((response) => {
         const html = response.data;
@@ -190,7 +190,7 @@ app.get("/movies/movieBySearch/:page", async (req, res) => {
 app.get("/movie/singleMovie/:id", async (req, res) => {
   try {
     axios
-      .get(`${process.env.APP_URI}/${req.params.id}`)
+      .get(`https://moviesverse.zip/${req.params.id}`)
       .then((response) => {
         let html = response.data;
         let $ = cheerio.load(html);
