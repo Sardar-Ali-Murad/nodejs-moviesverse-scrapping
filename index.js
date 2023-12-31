@@ -2,9 +2,7 @@ import express from "express";
 import dotenv from "dotenv";
 dotenv.config();
 import cheerio from "cheerio";
-import axios from "axios";
 let app = express();
-let PORT = process.env.PORT || 5000;
 
 // The Initial End Point Starts
 
@@ -14,23 +12,20 @@ app.get("/movies/:page", async (req, res) => {
   try {
     let movies = [];
     let totalPages;
-    await axios
-      .get(
-        `https://moviesverse.zip/category/movies/hollywood/page/${req.params.page}`
-      )
-      .then((response) => {
-        const html = response.data;
-        const $ = cheerio.load(html);
-        totalPages = Number($(".page-numbers:last").prev().text());
-        $("article", html).each(function () {
-          const link = $(this).find("a").attr("href");
-          const text = $(this).find("a").text();
-          const img = $(this).find("img").attr("src");
-          const id = link.split("/")[3];
-          movies = [...movies, { link, text, img, id }];
-        });
-      })
-      .catch((err) => console.log(err));
+    const response = await fetch(
+      `https://moviesverse.ong/category/movies/hollywood/page/${req.params.page}`
+    );
+    const html = await response.text();
+    const $ = cheerio.load(html);
+    totalPages = Number($(".page-numbers:last").prev().text());
+    $("article", html).each(function () {
+      const link = $(this).find("a").attr("href");
+      const text = $(this).find("a").text();
+      const img = $(this).find("img").attr("src");
+      const id = link.split("/")[3];
+      movies = [...movies, { link, text, img, id }];
+    });
+    // .catch((err) => console.log(err));
     res.json({ movies: movies, totalPages, itemsPerPage: movies.length });
   } catch (error) {
     console.log(error);
@@ -43,23 +38,19 @@ app.get("/movies/genre/:genre/:page", async (req, res) => {
   try {
     let movies = [];
     let totalPages;
-    await axios
-      .get(
-        `https://moviesverse.zip/category/genre/${req.params.genre}/page/${req.params.page}`
-      )
-      .then((response) => {
-        const html = response.data;
-        const $ = cheerio.load(html);
-        totalPages = Number($(".page-numbers:last").prev().text());
-        $("article", html).each(function () {
-          const link = $(this).find("a").attr("href");
-          const text = $(this).find("a").text();
-          const img = $(this).find("img").attr("src");
-          const id = link.split("/")[3];
-          movies = [...movies, { link, text, img, id }];
-        });
-      })
-      .catch((err) => console.log(err));
+    const response = await fetch(
+      `https://moviesverse.ong/category/genre/${req.params.genre}/page/${req.params.page}`
+    );
+    const html = await response.text();
+    const $ = cheerio.load(html);
+    totalPages = Number($(".page-numbers:last").prev().text());
+    $("article", html).each(function () {
+      const link = $(this).find("a").attr("href");
+      const text = $(this).find("a").text();
+      const img = $(this).find("img").attr("src");
+      const id = link.split("/")[3];
+      movies = [...movies, { link, text, img, id }];
+    });
     res.json({ movies: movies, totalPages, itemsPerPage: movies.length });
   } catch (error) {
     console.log(error);
@@ -72,23 +63,20 @@ app.get("/movies/year/:year/:page", async (req, res) => {
   try {
     let movies = [];
     let totalPages;
-    await axios
-      .get(
-        `https://moviesverse.zip/category/year/${req.params.year}/page/${req.params.page}`
-      )
-      .then((response) => {
-        const html = response.data;
-        const $ = cheerio.load(html);
-        totalPages = Number($(".page-numbers:last").prev().text());
-        $("article", html).each(function () {
-          const link = $(this).find("a").attr("href");
-          const text = $(this).find("a").text();
-          const img = $(this).find("img").attr("src");
-          const id = link.split("/")[3];
-          movies = [...movies, { link, text, img, id }];
-        });
-      })
-      .catch((err) => console.log(err));
+    const response = await fetch(
+      `https://moviesverse.ong/category/year/${req.params.year}/page/${req.params.page}`
+    );
+    const html = await response.text();
+
+    const $ = cheerio.load(html);
+    totalPages = Number($(".page-numbers:last").prev().text());
+    $("article", html).each(function () {
+      const link = $(this).find("a").attr("href");
+      const text = $(this).find("a").text();
+      const img = $(this).find("img").attr("src");
+      const id = link.split("/")[3];
+      movies = [...movies, { link, text, img, id }];
+    });
     res.json({ movies: movies, totalPages, itemsPerPage: movies.length });
   } catch (error) {
     console.log(error);
@@ -102,23 +90,20 @@ app.get("/movies/category/:category/:page", async (req, res) => {
   try {
     let movies = [];
     let totalPages;
-    await axios
-      .get(
-        `https://moviesverse.zip/category/movies/${req.params.category}/page/${req.params.page}`
-      )
-      .then((response) => {
-        const html = response.data;
-        const $ = cheerio.load(html);
-        totalPages = Number($(".page-numbers:last").prev().text());
-        $("article", html).each(function () {
-          const link = $(this).find("a").attr("href");
-          const text = $(this).find("a").text();
-          const img = $(this).find("img").attr("src");
-          const id = link.split("/")[3];
-          movies = [...movies, { link, text, img, id }];
-        });
-      })
-      .catch((err) => console.log(err));
+    const response = await fetch(
+      `https://moviesverse.ong/category/movies/${req.params.category}/page/${req.params.page}`
+    );
+    const html = await response.text();
+
+    const $ = cheerio.load(html);
+    totalPages = Number($(".page-numbers:last").prev().text());
+    $("article", html).each(function () {
+      const link = $(this).find("a").attr("href");
+      const text = $(this).find("a").text();
+      const img = $(this).find("img").attr("src");
+      const id = link.split("/")[3];
+      movies = [...movies, { link, text, img, id }];
+    });
     res.json({ movies: movies, totalPages, itemsPerPage: movies.length });
   } catch (error) {
     console.log(error);
@@ -132,23 +117,20 @@ app.get("/movies/webSeries/:webSeries/:page", async (req, res) => {
   try {
     let movies = [];
     let totalPages;
-    await axios
-      .get(
-        `https://moviesverse.zip/category/web-series/${req.params.webSeries}/page/${req.params.page}`
-      )
-      .then((response) => {
-        const html = response.data;
-        const $ = cheerio.load(html);
-        totalPages = Number($(".page-numbers:last").prev().text());
-        $("article", html).each(function () {
-          const link = $(this).find("a").attr("href");
-          const text = $(this).find("a").text();
-          const img = $(this).find("img").attr("src");
-          const id = link.split("/")[3];
-          movies = [...movies, { link, text, img, id }];
-        });
-      })
-      .catch((err) => console.log(err));
+    const response = await fetch(
+      `https://moviesverse.ong/category/web-series/${req.params.webSeries}/page/${req.params.page}`
+    );
+    const html = await response.text();
+
+    const $ = cheerio.load(html);
+    totalPages = Number($(".page-numbers:last").prev().text());
+    $("article", html).each(function () {
+      const link = $(this).find("a").attr("href");
+      const text = $(this).find("a").text();
+      const img = $(this).find("img").attr("src");
+      const id = link.split("/")[3];
+      movies = [...movies, { link, text, img, id }];
+    });
     res.json({ movies: movies, totalPages, itemsPerPage: movies.length });
   } catch (error) {
     console.log(error);
@@ -162,23 +144,21 @@ app.get("/movies/movieBySearch/:page", async (req, res) => {
   try {
     let movies = [];
     let totalPages;
-    await axios
-      .get(
-        `https://moviesverse.zip/page/${req.params.page}?s=${req.query.search}`
-      )
-      .then((response) => {
-        const html = response.data;
-        const $ = cheerio.load(html);
-        $("article", html).each(function () {
-          const link = $(this).find("a").attr("href");
-          const text = $(this).find("a").text();
-          const img = $(this).find("img").attr("src");
-          const id = link.split("/")[3];
-          movies = [...movies, { link, text, img, id }];
-        });
-        totalPages = Number($(".page-numbers:last").prev().text());
-      })
-      .catch((err) => console.log(err));
+
+    const response = await fetch(
+      `https://moviesverse.ong/page/${req.params.page}?s=${req.query.search}`
+    );
+    const html = await response.text();
+
+    const $ = cheerio.load(html);
+    $("article", html).each(function () {
+      const link = $(this).find("a").attr("href");
+      const text = $(this).find("a").text();
+      const img = $(this).find("img").attr("src");
+      const id = link.split("/")[3];
+      movies = [...movies, { link, text, img, id }];
+    });
+    totalPages = Number($(".page-numbers:last").prev().text());
     res.json({ movies: movies, totalPages, itemsPerPage: movies.length });
   } catch (error) {
     console.log(error);
@@ -189,42 +169,39 @@ app.get("/movies/movieBySearch/:page", async (req, res) => {
 // Getting the single movie Info Starts
 app.get("/movie/singleMovie/:id", async (req, res) => {
   try {
-    axios
-      .get(`https://moviesverse.zip/${req.params.id}`)
-      .then((response) => {
-        let html = response.data;
-        let $ = cheerio.load(html);
+    const response = await fetch(`https://moviesverse.ong/${req.params.id}`);
+    const html = await response.text();
 
-        let header = $("header").find("h1").text();
-        let intro = $('.thecontent p:contains("Download")').text();
-        let movieInfo = [];
-        $(".imdb_right span", html).each(function () {
-          let highlighter = $(this).find("b").text();
-          let info = $(this).text().split(highlighter).join("");
-          if (highlighter && info) {
-            movieInfo = [...movieInfo, { highlighter, info }];
-          }
-        });
+    let $ = cheerio.load(html);
 
-        let extraInfo = [];
-        $("article ul li").each(function () {
-          let header = $(this).find("strong").text();
-          let para = $(this).text().split(header).join("");
-          extraInfo = [...extraInfo, { header, para }];
-        });
+    let header = $("header").find("h1").text();
+    let intro = $('.thecontent p:contains("Download")').text();
+    let movieInfo = [];
+    $(".imdb_right span", html).each(function () {
+      let highlighter = $(this).find("b").text();
+      let info = $(this).text().split(highlighter).join("");
+      if (highlighter && info) {
+        movieInfo = [...movieInfo, { highlighter, info }];
+      }
+    });
 
-        let storyLine = $("article ul").next().next().text();
-        let screenShots = $("article img:eq(1)").attr("src");
-        res.json({
-          header,
-          intro,
-          movieInfo,
-          extraInfo,
-          storyLine,
-          screenShots,
-        });
-      })
-      .catch((err) => console.log(err));
+    let extraInfo = [];
+    $("article ul li").each(function () {
+      let header = $(this).find("strong").text();
+      let para = $(this).text().split(header).join("");
+      extraInfo = [...extraInfo, { header, para }];
+    });
+
+    let storyLine = $("article ul").next().next().text();
+    let screenShots = $("article img:eq(1)").attr("src");
+    res.json({
+      header,
+      intro,
+      movieInfo,
+      extraInfo,
+      storyLine,
+      screenShots,
+    });
   } catch (error) {
     console.log(error);
   }
@@ -233,6 +210,6 @@ app.get("/movie/singleMovie/:id", async (req, res) => {
 
 // Movies by Page No Ends
 
-app.listen(PORT, () => {
-  console.log(`App is listening on the Port ${PORT}`);
+app.listen(5000, () => {
+  console.log(`App is listening on the Port 5000`);
 });
